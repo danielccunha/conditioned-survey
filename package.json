@@ -1,8 +1,8 @@
 {
-  "name": "conditioned-voting",
+  "name": "conditioned-survey",
   "version": "1.0.0",
   "main": "dist/server.js",
-  "repository": "git@github.com:danielccunha/conditioned-voting.git",
+  "repository": "git@github.com:danielccunha/conditioned-survey.git",
   "author": "Daniel Cunha <danielcunha54@gmail.com>",
   "license": "MIT",
   "scripts": {
