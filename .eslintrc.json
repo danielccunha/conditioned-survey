@@ -6,9 +6,8 @@
   },
   "extends": [
     "standard",
+    "prettier",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
-    "prettier/standard",
     "plugin:prettier/recommended"
   ],
   "globals": {
