@@ -5,6 +5,7 @@ import express from 'express'
 import helmet from 'helmet'
 import 'express-async-errors'
 
+import '../database/connection'
 import { logger, errorHandler } from './middleware'
 import { routes } from './routes'
 
