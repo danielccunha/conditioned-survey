@@ -1,11 +1,6 @@
 import bcrypt from 'bcrypt'
 
-export interface Hasher {
-  hash(value: string): Promise<string>
-  compare(value: string, hash: string): Promise<boolean>
-}
-
-export class HasherImpl implements Hasher {
+export class Hasher {
   constructor(private salt: number) {}
 
   hash(value: string): Promise<string> {
