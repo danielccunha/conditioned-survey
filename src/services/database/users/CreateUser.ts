@@ -1,3 +1,5 @@
+import { inject, singleton } from 'tsyringe'
+
 import Joi from '@hapi/joi'
 
 import { User, Gender } from '../../../database/entities'
@@ -19,8 +21,14 @@ const validator = Joi.object<CreateUserDto>().keys({
   birthday: Joi.date().min(1900).max('now').required()
 })
 
+@singleton()
 export class CreateUser {
-  constructor(private hasher: Hasher, private repository: UsersRepository) {}
+  constructor(
+    private hasher: Hasher,
+
+    @inject('UsersRepository')
+    private repository: UsersRepository
+  ) {}
 
   async execute(dto: CreateUserDto): Promise<User> {
     const validatedDto = await this.validate(dto)

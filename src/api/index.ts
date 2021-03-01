@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import 'dotenv/config'
 
 import cors from 'cors'
@@ -5,6 +6,7 @@ import express from 'express'
 import helmet from 'helmet'
 import 'express-async-errors'
 
+import '../config/container'
 import '../database/connection'
 import { logger, errorHandler } from './middleware'
 import { routes } from './routes'

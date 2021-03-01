@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class Hasher {
   private salt: number
 
