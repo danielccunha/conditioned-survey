@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 
-import { Hasher } from './Hasher'
+import { HasherImpl } from './Hasher'
 
 jest.mock('bcrypt', () => ({
   hash: async () => 'hashed_value',
@@ -9,7 +9,7 @@ jest.mock('bcrypt', () => ({
 
 const makeSut = () => {
   const salt = 12
-  const sut = new Hasher(salt)
+  const sut = new HasherImpl(salt)
   return { sut, salt }
 }
 
