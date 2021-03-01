@@ -1,7 +1,11 @@
 import bcrypt from 'bcrypt'
 
 export class Hasher {
-  constructor(private salt: number) {}
+  private salt: number
+
+  constructor() {
+    this.salt = parseInt(process.env.HASHER_SALT)
+  }
 
   hash(value: string): Promise<string> {
     return bcrypt.hash(value, this.salt)

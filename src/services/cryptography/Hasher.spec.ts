@@ -8,8 +8,8 @@ jest.mock('bcrypt', () => ({
 }))
 
 const makeSut = () => {
-  const salt = 12
-  const sut = new Hasher(salt)
+  const salt = parseInt(process.env.HASHER_SALT)
+  const sut = new Hasher()
   return { sut, salt }
 }
 
