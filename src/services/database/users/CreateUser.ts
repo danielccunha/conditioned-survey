@@ -37,7 +37,7 @@ export class CreateUser {
   }
 
   private async validate(dto: CreateUserDto): Promise<CreateUserDto> {
-    const { error, value } = validator.validate(dto)
+    const { error, value } = validator.validate(dto, { abortEarly: false })
     const errors = PropertyError.fromValidationError(error)
 
     if (!PropertyError.includes(errors, 'email')) {
