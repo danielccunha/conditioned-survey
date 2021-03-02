@@ -3,7 +3,7 @@ import { singleton } from 'tsyringe'
 
 @singleton()
 export class Hasher {
-  private salt: number
+  private readonly salt: number
 
   constructor() {
     this.salt = parseInt(process.env.HASHER_SALT)
