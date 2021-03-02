@@ -12,6 +12,7 @@
     "test:verbose": "jest --passWithNoTests --runInBand --watch",
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests",
+    "test:ci": "yarn test --coverage",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js"
   },
   "engines": {

@@ -1,6 +1,6 @@
 export default {
   clearMocks: true,
-  collectCoverageFrom: ['<rootDir>/src/services/*.ts'],
+  collectCoverageFrom: ['<rootDir>/src/services/**/*.ts'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   testEnvironment: 'node',
