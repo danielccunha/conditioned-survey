@@ -18,7 +18,7 @@ export class Encrypter {
 
   encrypt(value: any): Promise<string> {
     return new Promise(resolve => {
-      const accessToken = jwt.sign(value, this.secret)
+      const accessToken = jwt.sign(value, this.secret, { expiresIn: '1d' })
       resolve(accessToken)
     })
   }

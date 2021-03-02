@@ -18,7 +18,7 @@ describe('Encrypter', () => {
     const { sut, secret } = makeSut()
     const signSpy = jest.spyOn(jwt, 'sign')
     await sut.encrypt('any_value')
-    expect(signSpy).toHaveBeenCalledWith('any_value', secret)
+    expect(signSpy).toHaveBeenCalledWith('any_value', secret, { expiresIn: '1d' })
   })
 
   test('should return a token on sign success', async () => {
