@@ -39,7 +39,7 @@ export class CreateSession {
     const errors = PropertyError.fromValidationError(error)
 
     if (errors.length) {
-      throw new AppError('One or more properties are not valid.')
+      throw new AppError('One or more properties are not valid.', { data: errors })
     }
 
     return value
