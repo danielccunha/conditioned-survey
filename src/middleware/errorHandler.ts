@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from 'express'
 
-import { AppError } from './../../errors/AppError'
+import { AppError } from '../errors/AppError'
 
 export const errorHandler = (
   error: Error,

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 
-import { CreateUser } from '../../services/database/users/CreateUser'
+import { CreateUser } from '../services/database/users/CreateUser'
 
 export class UsersController {
   async create(request: Request, response: Response): Promise<Response> {
