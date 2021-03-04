@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm'
+
+import { Survey } from './Survey'
 
 export enum Gender {
   Male = 'M',
@@ -27,4 +36,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @OneToMany(() => Survey, survey => survey.user)
+  surveys: Survey[]
 }
