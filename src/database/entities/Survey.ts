@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 
 import { SurveyOption } from './SurveyOption'
+import { SurveySpecification } from './SurveySpecification'
 import { User } from './User'
 
 export enum SurveyType {
@@ -47,4 +48,7 @@ export class Survey {
 
   @OneToMany(() => SurveyOption, option => option.survey)
   options: SurveyOption[]
+
+  @OneToMany(() => SurveySpecification, spec => spec.survey)
+  specifications: SurveySpecification[]
 }
