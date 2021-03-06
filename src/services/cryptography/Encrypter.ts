@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import { singleton } from 'tsyringe'
 
 @singleton()
@@ -10,9 +10,17 @@ export class Encrypter {
   }
 
   decrypt<T = any>(value: string): Promise<T> {
-    return new Promise(resolve => {
-      const decryptedValue: any = jwt.verify(value, this.secret)
-      resolve(decryptedValue as T)
+    return new Promise((resolve, reject) => {
+      try {
+        const decryptedValue: any = jwt.verify(value, this.secret)
+        resolve(decryptedValue as T)
+      } catch (error) {
+        if (error instanceof TokenExpiredError) {
+          return resolve(null)
+        }
+
+        reject(error)
+      }
     })
   }
 

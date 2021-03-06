@@ -1,8 +1,9 @@
-import jwt from 'jsonwebtoken'
+import jwt, { TokenExpiredError } from 'jsonwebtoken'
 
 import { Encrypter } from './Encrypter'
 
 jest.mock('jsonwebtoken', () => ({
+  ...jest.requireActual('jsonwebtoken'),
   sign: () => 'any_token',
   verify: () => 'any_value'
 }))
@@ -38,5 +39,23 @@ describe('Encrypter', () => {
     const { sut } = makeSut()
     const value = await sut.decrypt('any_token')
     expect(value).toBe('any_value')
+  })
+
+  test('should return null when encrypted value is expired', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+      throw new TokenExpiredError('', new Date())
+    })
+    const value = await sut.decrypt('any_token')
+    expect(value).toBeFalsy()
+  })
+
+  test('should throw if error is not expected', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+      throw new Error('')
+    })
+    const promise = sut.decrypt('any_token')
+    await expect(promise).rejects.toThrow()
   })
 })
