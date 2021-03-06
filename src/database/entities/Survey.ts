@@ -8,6 +8,7 @@ import {
   OneToMany
 } from 'typeorm'
 
+import { SurveyAnswer } from './SurveyAnswer'
 import { SurveyOption } from './SurveyOption'
 import { SurveySpecification } from './SurveySpecification'
 import { User } from './User'
@@ -46,9 +47,16 @@ export class Survey {
   @ManyToOne(() => User, user => user.surveys)
   user: User
 
+  @OneToMany(() => SurveyAnswer, answers => answers.survey)
+  answers: SurveyAnswer[]
+
   @OneToMany(() => SurveyOption, option => option.survey)
   options: SurveyOption[]
 
   @OneToMany(() => SurveySpecification, spec => spec.survey)
   specifications: SurveySpecification[]
 }
+
+export * from './SurveyAnswer'
+export * from './SurveyOption'
+export * from './SurveySpecification'

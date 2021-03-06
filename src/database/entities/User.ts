@@ -7,7 +7,7 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 
-import { Survey } from './Survey'
+import { Survey, SurveyAnswer } from './Survey'
 
 export enum Gender {
   Male = 'M',
@@ -39,4 +39,7 @@ export class User {
 
   @OneToMany(() => Survey, survey => survey.user)
   surveys: Survey[]
+
+  @OneToMany(() => SurveyAnswer, answer => answer.user)
+  answers: SurveyAnswer[]
 }
