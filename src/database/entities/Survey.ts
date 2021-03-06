@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne
+  ManyToOne,
+  OneToMany
 } from 'typeorm'
 
+import { SurveyOption } from './SurveyOption'
 import { User } from './User'
 
 export enum SurveyType {
@@ -42,4 +44,7 @@ export class Survey {
 
   @ManyToOne(() => User, user => user.surveys)
   user: User
+
+  @OneToMany(() => SurveyOption, option => option.survey)
+  options: SurveyOption[]
 }
