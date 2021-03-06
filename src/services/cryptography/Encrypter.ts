@@ -1,6 +1,8 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import { singleton } from 'tsyringe'
 
+import { AppError } from '../../errors/AppError'
+
 @singleton()
 export class Encrypter {
   private readonly secret: string
@@ -19,7 +21,7 @@ export class Encrypter {
           return resolve(null)
         }
 
-        reject(error)
+        reject(new AppError('Token is not valid.'))
       }
     })
   }
