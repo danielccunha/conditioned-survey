@@ -46,7 +46,7 @@ export class CreateSurvey {
     if (!PropertyError.includes(errors, 'userId')) {
       const user = await this.usersRepository.findById(value.userId)
       if (!user) {
-        errors.push(new PropertyError('user', '"user" not found.'))
+        errors.push(new PropertyError('userId', '"user" not found.'))
       }
     }
 
