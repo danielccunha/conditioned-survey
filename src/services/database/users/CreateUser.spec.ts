@@ -76,7 +76,7 @@ describe('CreateUser', () => {
     expect(hashSpy).toHaveBeenCalledWith(dto.password)
   })
 
-  test('should store user when properties are valid', async () => {
+  test('should create user when properties are valid', async () => {
     const { sut, repositoryStub } = makeSut()
     const storeSpy = jest.spyOn(repositoryStub, 'store')
     const user = await sut.execute(makeValidDto())
