@@ -63,7 +63,7 @@ describe('CreateSurvey', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test("should throw when user doesn't exist", async () => {
+  test('should throw when user is not found', async () => {
     const { sut, usersRepositoryStub } = makeSut()
     jest.spyOn(usersRepositoryStub, 'findById').mockResolvedValueOnce(null)
     const promise = sut.execute(makeValidDto())
