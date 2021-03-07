@@ -18,6 +18,12 @@ export enum SurveyType {
   List = 'L'
 }
 
+export enum SurveyStatus {
+  Draft = 'D',
+  Published = 'P',
+  Closed = 'C'
+}
+
 @Entity({ name: 'surveys' })
 export class Survey {
   @PrimaryGeneratedColumn('uuid')
@@ -36,7 +42,7 @@ export class Survey {
   type: SurveyType
 
   @Column()
-  isActive: boolean
+  status: SurveyStatus
 
   @CreateDateColumn()
   createdAt: Date
