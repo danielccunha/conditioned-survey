@@ -1,3 +1,5 @@
+import { inject, singleton } from 'tsyringe'
+
 import Joi from '@hapi/joi'
 
 import { SurveyType, Survey, SurveyStatus, SurveyOption } from '../../../database/entities'
@@ -21,9 +23,13 @@ const validator = Joi.object<CreateSurveyDto>().keys({
   type: Joi.string().trim().uppercase().valid('B', 'L').required()
 })
 
+@singleton()
 export class CreateSurvey {
   constructor(
+    @inject('SurveysRepository')
     private surveysRepository: SurveysRepository,
+
+    @inject('UsersRepository')
     private usersRepository: UsersRepository
   ) {}
 
