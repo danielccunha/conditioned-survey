@@ -15,4 +15,8 @@ export class SurveyOption {
 
   @ManyToOne(() => Survey, survey => survey.options)
   survey: Survey
+
+  constructor(option: string) {
+    this.option = option
+  }
 }

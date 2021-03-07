@@ -3,8 +3,8 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Survey } from './Survey'
 
 export enum SurveySpecificationType {
-  A = 'Age',
-  G = 'Gender'
+  Age = 'A',
+  Gender = 'G'
 }
 
 @Entity({ name: 'survey_specifications' })
