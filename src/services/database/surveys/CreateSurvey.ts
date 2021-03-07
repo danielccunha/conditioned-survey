@@ -1,11 +1,9 @@
 import Joi from '@hapi/joi'
 
-import { SurveyType, Survey, SurveyStatus } from '../../../database/entities'
-import { SurveysRepository } from '../../../database/repositories/SurveysRepository'
-import { UsersRepository } from '../../../database/repositories/UsersRepository'
+import { SurveyType, Survey, SurveyStatus, SurveyOption } from '../../../database/entities'
+import { SurveysRepository, UsersRepository } from '../../../database/repositories'
 import { AppError, PropertyError } from '../../../errors'
 import { removeDuplicates } from '../../../helpers'
-import { SurveyOption } from './../../../database/entities/SurveyOption'
 
 export interface CreateSurveyDto {
   userId: string

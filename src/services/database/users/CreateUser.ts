@@ -5,7 +5,7 @@ import Joi from '@hapi/joi'
 import { User, Gender } from '../../../database/entities'
 import { AppError, PropertyError } from '../../../errors'
 import { Hasher } from '../../cryptography/Hasher'
-import { UsersRepository } from './../../../database/repositories/UsersRepository'
+import { UsersRepository } from './../../../database/repositories'
 
 export interface CreateUserDto {
   email: string

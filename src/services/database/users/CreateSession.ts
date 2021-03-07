@@ -3,7 +3,7 @@ import { inject, singleton } from 'tsyringe'
 import Joi from '@hapi/joi'
 
 import { User } from '../../../database/entities'
-import { UsersRepository } from '../../../database/repositories/UsersRepository'
+import { UsersRepository } from '../../../database/repositories'
 import { AppError, PropertyError } from '../../../errors'
 import { Hasher } from '../../cryptography/Hasher'
 import { Encrypter } from './../../cryptography/Encrypter'

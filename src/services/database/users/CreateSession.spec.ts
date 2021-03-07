@@ -1,5 +1,5 @@
 import { User } from '../../../database/entities'
-import { UsersRepository } from '../../../database/repositories/UsersRepository'
+import { UsersRepository } from '../../../database/repositories'
 import { Encrypter } from '../../cryptography/Encrypter'
 import { Hasher } from '../../cryptography/Hasher'
 import { CreateSession, CreateSessionDto } from './CreateSession'

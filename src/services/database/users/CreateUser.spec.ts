@@ -1,5 +1,5 @@
 import { Gender, User } from '../../../database/entities'
-import { UsersRepository } from '../../../database/repositories/UsersRepository'
+import { UsersRepository } from '../../../database/repositories'
 import { Hasher } from '../../cryptography/Hasher'
 import { CreateUser, CreateUserDto } from './CreateUser'
 

@@ -1,6 +1,5 @@
 import { Survey, SurveyType, User } from '../../../database/entities'
-import { SurveysRepository } from '../../../database/repositories/SurveysRepository'
-import { UsersRepository } from '../../../database/repositories/UsersRepository'
+import { SurveysRepository, UsersRepository } from '../../../database/repositories'
 import { CreateSurvey, CreateSurveyDto } from './CreateSurvey'
 
 const makeSurveysRepository = (): Partial<SurveysRepository> => {
