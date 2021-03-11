@@ -58,7 +58,7 @@ export class CreateSurvey {
     }
 
     if (!PropertyError.includes(errors, 'type', 'options') && value.type === 'L') {
-      value.options = removeDuplicates(value.options || [])
+      value.options = removeDuplicates(value.options)
       if (value.options.length < 2) {
         errors.push(new PropertyError('options', '"options" must have at least two values.'))
       }

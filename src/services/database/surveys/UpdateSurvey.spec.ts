@@ -144,4 +144,12 @@ describe('UpdateSurvey', () => {
     const updatedSurvey = await sut.execute(makeValidDto())
     expect(updateSpy).toHaveBeenCalledWith(updatedSurvey)
   })
+
+  test('should map options when type is list', async () => {
+    const { sut } = makeSut()
+    const options = ['A', 'B']
+    const updatedSurvey = await sut.execute({ ...makeValidDto(), type: SurveyType.List, options })
+    expect(updatedSurvey.options[0].option).toBe('A')
+    expect(updatedSurvey.options[1].option).toBe('B')
+  })
 })
