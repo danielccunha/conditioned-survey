@@ -1,4 +1,4 @@
-import { inject } from 'tsyringe'
+import { inject, singleton } from 'tsyringe'
 
 import Joi from '@hapi/joi'
 
@@ -25,6 +25,7 @@ const validator = Joi.object<UpdateSurveyDto>().keys({
   type: Joi.string().trim().uppercase().valid('B', 'L').required()
 })
 
+@singleton()
 export class UpdateSurvey {
   constructor(
     @inject('SurveysRepository')
