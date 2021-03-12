@@ -62,8 +62,10 @@ describe('UpdateSurvey', () => {
   test.each([
     [{ title: '' }],
     [{ title: undefined }],
+    [{ title: new Array(65).fill('a').join('') }],
     [{ description: '' }],
     [{ description: undefined }],
+    [{ description: new Array(2049).fill('a').join('') }],
     [{ surveyId: '' }],
     [{ surveyId: 'invalid_uuid' }],
     [{ surveyId: undefined }],

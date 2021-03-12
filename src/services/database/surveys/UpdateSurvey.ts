@@ -19,8 +19,8 @@ export interface UpdateSurveyDto {
 const validator = Joi.object<UpdateSurveyDto>().keys({
   surveyId: Joi.string().trim().uuid().required(),
   userId: Joi.string().trim().uuid().required(),
-  title: Joi.string().trim().required(),
-  description: Joi.string().trim().required(),
+  title: Joi.string().trim().max(64).required(),
+  description: Joi.string().max(2048).trim().required(),
   options: Joi.array().items(Joi.string().trim()).default([]),
   type: Joi.string().trim().uppercase().valid('B', 'L').required()
 })
