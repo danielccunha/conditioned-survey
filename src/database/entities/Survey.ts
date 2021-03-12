@@ -36,7 +36,13 @@ export class Survey {
   title: string
 
   @Column()
+  normalizedTitle: string
+
+  @Column()
   description: string
+
+  @Column()
+  normalizedDescription: string
 
   @Column()
   type: SurveyType

@@ -24,7 +24,17 @@ export class createSurveys1614872574882 implements MigrationInterface {
             isNullable: false
           },
           {
+            name: 'normalized_title',
+            type: 'varchar',
+            isNullable: false
+          },
+          {
             name: 'description',
+            type: 'varchar',
+            isNullable: false
+          },
+          {
+            name: 'normalized_description',
             type: 'varchar',
             isNullable: false
           },
@@ -35,10 +45,10 @@ export class createSurveys1614872574882 implements MigrationInterface {
             enum: ['B', 'L']
           },
           {
-            name: 'is_active',
-            type: 'bool',
+            name: 'status',
+            type: 'varchar',
             isNullable: false,
-            default: true
+            enum: ['D', 'P', 'C']
           },
           {
             name: 'created_at',

@@ -31,6 +31,7 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   }
 
   async create(survey: Survey): Promise<Survey> {
+    this.normalize(survey)
     const createdSurvey = await this.surveysRepo.save(survey)
     survey.options.forEach(option => (option.surveyId = createdSurvey.id))
     createdSurvey.options = await this.surveyOptionsRepo.save(survey.options)
@@ -38,6 +39,7 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   }
 
   async update(survey: Survey): Promise<Survey> {
+    this.normalize(survey)
     const { type: typeBefore } = await this.findById(survey.id)
     const updatedSurvey = await this.surveysRepo.save(omit(survey, 'options'))
     updatedSurvey.options = await this.surveyOptionsRepo.find({ surveyId: survey.id })
@@ -61,5 +63,10 @@ export class SurveysRepositoryImpl implements SurveysRepository {
     }
 
     return updatedSurvey
+  }
+
+  private normalize(survey: Survey) {
+    survey.normalizedTitle = survey.title.trim().toLowerCase()
+    survey.normalizedDescription = survey.description.trim().toLowerCase()
   }
 }
