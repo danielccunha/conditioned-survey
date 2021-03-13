@@ -47,7 +47,7 @@ export class SurveysRepositoryImpl implements SurveysRepository {
     }
 
     return await query
-      .orderBy('created_at')
+      .orderBy('created_at', 'DESC')
       .skip(pagination.skip)
       .take(pagination.size)
       .getManyAndCount()
