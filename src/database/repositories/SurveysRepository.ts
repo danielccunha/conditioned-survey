@@ -1,9 +1,18 @@
 import omit from 'lodash/omit'
 import { getRepository, Repository } from 'typeorm'
 
-import { Survey, SurveyOption, SurveyType } from '../entities'
+import { Pagination } from '../../middleware/pagination'
+import { Survey, SurveyOption, SurveyType, SurveyStatus } from '../entities'
+
+interface FindParams {
+  query: string
+  userId?: string
+  status: SurveyStatus[]
+  pagination: Pagination
+}
 
 export interface SurveysRepository {
+  find(params: FindParams): Promise<[Survey[], number]>
   findById(id: string): Promise<Survey>
   findOpenByUserAndTitle(userId: string, title: string): Promise<Survey>
   create(survey: Survey): Promise<Survey>
@@ -17,6 +26,31 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   constructor() {
     this.surveysRepo = getRepository(Survey)
     this.surveyOptionsRepo = getRepository(SurveyOption)
+  }
+
+  async find(params: FindParams): Promise<[Survey[], number]> {
+    const { userId, status, pagination } = params
+    const query = this.surveysRepo.createQueryBuilder()
+
+    if (userId) {
+      query.where('user_id = :userId', { userId })
+    }
+
+    if (status.length) {
+      query.andWhere('status IN (:...status)', { status })
+    }
+
+    let term = params.query?.trim()?.toLowerCase() || ''
+    if (term) {
+      term = `%${term}%`
+      query.andWhere('normalized_title LIKE :term OR normalized_description LIKE :term', { term })
+    }
+
+    return await query
+      .orderBy('created_at')
+      .skip(pagination.skip)
+      .take(pagination.size)
+      .getManyAndCount()
   }
 
   findById(id: string): Promise<Survey> {
