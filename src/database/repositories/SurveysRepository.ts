@@ -12,6 +12,7 @@ interface FindParams {
 }
 
 export interface SurveysRepository {
+  close(survey: Survey): Promise<Survey>
   find(params: FindParams): Promise<[Survey[], number]>
   findById(id: string): Promise<Survey>
   findOpenByUserAndTitle(userId: string, title: string): Promise<Survey>
@@ -27,6 +28,13 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   constructor() {
     this.surveysRepo = getRepository(Survey)
     this.surveyOptionsRepo = getRepository(SurveyOption)
+  }
+
+  async close(survey: Survey): Promise<Survey> {
+    survey.status = SurveyStatus.Closed
+    const updatedSurvey = await this.surveysRepo.save(survey)
+
+    return updatedSurvey
   }
 
   async publish(survey: Survey): Promise<Survey> {
