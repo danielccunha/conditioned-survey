@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 
+import { CloseSurvey } from '../services/database/surveys/CloseSurvey'
 import { CreateSurvey } from '../services/database/surveys/CreateSurvey'
 import { FindSurveys } from '../services/database/surveys/FindSurveys'
+import { PublishSurvey } from '../services/database/surveys/PublishSurvey'
 import { UpdateSurvey } from '../services/database/surveys/UpdateSurvey'
 import * as views from '../views/surveys.views'
 
@@ -33,5 +35,19 @@ export class SurveysController {
     const survey = await service.execute({ ...body, surveyId: params.id, userId: user.id })
 
     return response.json(views.single(survey))
+  }
+
+  async publish({ user, params }: Request, response: Response): Promise<Response> {
+    const service = container.resolve(PublishSurvey)
+    await service.execute({ userId: user.id, surveyId: params.id })
+
+    return response.status(204).send()
+  }
+
+  async close({ user, params }: Request, response: Response): Promise<Response> {
+    const service = container.resolve(CloseSurvey)
+    await service.execute({ userId: user.id, surveyId: params.id })
+
+    return response.status(204).send()
   }
 }
