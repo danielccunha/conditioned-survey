@@ -17,6 +17,7 @@ export interface SurveysRepository {
   findOpenByUserAndTitle(userId: string, title: string): Promise<Survey>
   create(survey: Survey): Promise<Survey>
   update(survey: Survey): Promise<Survey>
+  publish(survey: Survey): Promise<Survey>
 }
 
 export class SurveysRepositoryImpl implements SurveysRepository {
@@ -26,6 +27,13 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   constructor() {
     this.surveysRepo = getRepository(Survey)
     this.surveyOptionsRepo = getRepository(SurveyOption)
+  }
+
+  async publish(survey: Survey): Promise<Survey> {
+    survey.status = SurveyStatus.Published
+    const updatedSurvey = await this.surveysRepo.save(survey)
+
+    return updatedSurvey
   }
 
   async find(params: FindParams): Promise<[Survey[], number]> {
