@@ -81,12 +81,15 @@ export class SurveysRepositoryImpl implements SurveysRepository {
     // Remove survey options if changed type to boolean
     if (survey.type === SurveyType.Boolean && typeBefore === SurveyType.List) {
       await this.surveyOptionsRepo.delete({ surveyId: survey.id })
+      updatedSurvey.options = []
     } else if (survey.type === SurveyType.List) {
       // Verify if there was any change
       const existingOptions = updatedSurvey.options.map(option => option.option.toLowerCase())
-      const didChange = survey.options.some(option => {
-        return existingOptions.includes(option.option.toLowerCase())
-      })
+      const didChange =
+        existingOptions.length !== survey.options.length ||
+        survey.options.some(option => {
+          return !existingOptions.includes(option.option.toLowerCase())
+        })
 
       // In case of change, for simplicity, remove everything and create again
       if (didChange) {
