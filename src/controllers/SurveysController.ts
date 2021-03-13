@@ -2,10 +2,25 @@ import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 
 import { CreateSurvey } from '../services/database/surveys/CreateSurvey'
+import { FindSurveys } from '../services/database/surveys/FindSurveys'
 import { UpdateSurvey } from '../services/database/surveys/UpdateSurvey'
 import * as views from '../views/surveys.views'
 
 export class SurveysController {
+  async index({ user, pagination, query }: Request, response: Response): Promise<Response> {
+    const params: any = {
+      ...query,
+      userId: user.id,
+      status: typeof query.status === 'string' ? [query.status] : query.status,
+      pagination
+    }
+    const service = container.resolve(FindSurveys)
+    const [surveys, total] = await service.execute(params)
+
+    response.header('X-Total-Count', total.toString())
+    return response.json(views.many(surveys))
+  }
+
   async create({ user, body }: Request, response: Response): Promise<Response> {
     const service = container.resolve(CreateSurvey)
     const survey = await service.execute({ ...body, userId: user.id })
