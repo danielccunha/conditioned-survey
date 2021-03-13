@@ -3,6 +3,7 @@ import { getRepository, Repository } from 'typeorm'
 
 import { Pagination } from '../../middleware/pagination'
 import { Survey, SurveyOption, SurveyType, SurveyStatus } from '../entities'
+import { SurveySpecification } from './../entities/SurveySpecification'
 
 interface FindParams {
   query: string
@@ -19,15 +20,21 @@ export interface SurveysRepository {
   create(survey: Survey): Promise<Survey>
   update(survey: Survey): Promise<Survey>
   publish(survey: Survey): Promise<Survey>
+  storeSpecifications(
+    surveyId: string,
+    specs: SurveySpecification[]
+  ): Promise<SurveySpecification[]>
 }
 
 export class SurveysRepositoryImpl implements SurveysRepository {
   private surveysRepo: Repository<Survey>
-  private surveyOptionsRepo: Repository<SurveyOption>
+  private optionsRepo: Repository<SurveyOption>
+  private specsRepo: Repository<SurveySpecification>
 
   constructor() {
     this.surveysRepo = getRepository(Survey)
-    this.surveyOptionsRepo = getRepository(SurveyOption)
+    this.optionsRepo = getRepository(SurveyOption)
+    this.specsRepo = getRepository(SurveySpecification)
   }
 
   async close(survey: Survey): Promise<Survey> {
@@ -84,7 +91,7 @@ export class SurveysRepositoryImpl implements SurveysRepository {
     this.normalize(survey)
     const createdSurvey = await this.surveysRepo.save(survey)
     survey.options.forEach(option => (option.surveyId = createdSurvey.id))
-    createdSurvey.options = await this.surveyOptionsRepo.save(survey.options)
+    createdSurvey.options = await this.optionsRepo.save(survey.options)
     return createdSurvey
   }
 
@@ -92,11 +99,11 @@ export class SurveysRepositoryImpl implements SurveysRepository {
     this.normalize(survey)
     const { type: typeBefore } = await this.findById(survey.id)
     const updatedSurvey = await this.surveysRepo.save(omit(survey, 'options'))
-    updatedSurvey.options = await this.surveyOptionsRepo.find({ surveyId: survey.id })
+    updatedSurvey.options = await this.optionsRepo.find({ surveyId: survey.id })
 
     // Remove survey options if changed type to boolean
     if (survey.type === SurveyType.Boolean && typeBefore === SurveyType.List) {
-      await this.surveyOptionsRepo.delete({ surveyId: survey.id })
+      await this.optionsRepo.delete({ surveyId: survey.id })
       updatedSurvey.options = []
     } else if (survey.type === SurveyType.List) {
       // Verify if there was any change
@@ -109,9 +116,9 @@ export class SurveysRepositoryImpl implements SurveysRepository {
 
       // In case of change, for simplicity, remove everything and create again
       if (didChange) {
-        await this.surveyOptionsRepo.delete({ surveyId: survey.id })
+        await this.optionsRepo.delete({ surveyId: survey.id })
         survey.options.forEach(option => (option.surveyId = updatedSurvey.id))
-        updatedSurvey.options = await this.surveyOptionsRepo.save(survey.options)
+        updatedSurvey.options = await this.optionsRepo.save(survey.options)
       }
     }
 
@@ -121,5 +128,13 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   private normalize(survey: Survey) {
     survey.normalizedTitle = survey.title.trim().toLowerCase()
     survey.normalizedDescription = survey.description.trim().toLowerCase()
+  }
+
+  async storeSpecifications(
+    surveyId: string,
+    specs: SurveySpecification[]
+  ): Promise<SurveySpecification[]> {
+    await this.specsRepo.delete({ surveyId })
+    return await this.specsRepo.save(specs)
   }
 }
