@@ -2,7 +2,7 @@ import omit from 'lodash/omit'
 import { getRepository, Repository } from 'typeorm'
 
 import { Pagination } from '../../middleware/pagination'
-import { Survey, SurveyOption, SurveyType, SurveyStatus } from '../entities'
+import { Survey, SurveyOption, SurveyType, SurveyStatus, SurveyAnswer } from '../entities'
 import { SurveySpecification } from './../entities/SurveySpecification'
 
 interface FindParams {
@@ -18,9 +18,11 @@ export interface SurveysRepository {
   findById(id: string): Promise<Survey>
   findByIdWithRelations(id: string): Promise<Survey>
   findOpenByUserAndTitle(userId: string, title: string): Promise<Survey>
+  findAnswerByUserANdSurvey(userId: string, surveyId: string): Promise<SurveyAnswer>
   create(survey: Survey): Promise<Survey>
   update(survey: Survey): Promise<Survey>
   publish(survey: Survey): Promise<Survey>
+  storeAnswer(answer: SurveyAnswer): Promise<SurveyAnswer>
   storeSpecifications(
     surveyId: string,
     specs: SurveySpecification[]
@@ -31,11 +33,13 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   private surveysRepo: Repository<Survey>
   private optionsRepo: Repository<SurveyOption>
   private specsRepo: Repository<SurveySpecification>
+  private answersRepo: Repository<SurveyAnswer>
 
   constructor() {
     this.surveysRepo = getRepository(Survey)
     this.optionsRepo = getRepository(SurveyOption)
     this.specsRepo = getRepository(SurveySpecification)
+    this.answersRepo = getRepository(SurveyAnswer)
   }
 
   async close(survey: Survey): Promise<Survey> {
@@ -94,6 +98,10 @@ export class SurveysRepositoryImpl implements SurveysRepository {
       .getOne()
   }
 
+  findAnswerByUserANdSurvey(userId: string, surveyId: string): Promise<SurveyAnswer> {
+    return this.answersRepo.findOne({ where: { userId, surveyId } })
+  }
+
   async create(survey: Survey): Promise<Survey> {
     this.normalize(survey)
     const createdSurvey = await this.surveysRepo.save(survey)
@@ -135,6 +143,10 @@ export class SurveysRepositoryImpl implements SurveysRepository {
   private normalize(survey: Survey) {
     survey.normalizedTitle = survey.title.trim().toLowerCase()
     survey.normalizedDescription = survey.description.trim().toLowerCase()
+  }
+
+  storeAnswer(answer: SurveyAnswer): Promise<SurveyAnswer> {
+    return this.answersRepo.save(answer)
   }
 
   async storeSpecifications(
