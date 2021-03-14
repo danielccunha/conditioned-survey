@@ -114,7 +114,7 @@ describe('ManageSpecification', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test.each([['-1'], ['101']])("should throw when age isn't between 0 and 100", async value => {
+  test.each([['-1'], ['151']])("should throw when age isn't between 0 and 150", async value => {
     const { sut } = makeSut()
     const spec = { type: SurveySpecificationType.Age, value, weight: 1 }
     const promise = sut.execute({ ...makeDto(), specifications: [spec] })

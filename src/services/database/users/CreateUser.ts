@@ -18,7 +18,7 @@ const validator = Joi.object<CreateUserDto>().keys({
   email: Joi.string().email().trim().lowercase().required(),
   password: Joi.string().min(8).max(64).trim().required(),
   gender: Joi.string().trim().uppercase().valid('M', 'F').required(),
-  birthday: Joi.date().min(1900).max('now').required()
+  birthday: Joi.date().min(new Date(1900, 0, 1)).max('now').required()
 })
 
 @singleton()

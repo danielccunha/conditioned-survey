@@ -78,8 +78,8 @@ export class ManageSpecification {
               }
             } else {
               const parsedValue = parseInt(rawValue)
-              if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 100) {
-                valueError = 'Value must be between 0 and 100 when type is age.'
+              if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 150) {
+                valueError = 'Value must be between 0 and 150 when type is age.'
               }
             }
 
