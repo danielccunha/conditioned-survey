@@ -9,6 +9,7 @@ import { FindSurveys } from '../services/database/surveys/FindSurveys'
 import { FindSurveyWithRelations } from '../services/database/surveys/FindSurveyWithRelations'
 import { ManageSpecification } from '../services/database/surveys/ManageSpecifications'
 import { PublishSurvey } from '../services/database/surveys/PublishSurvey'
+import { SummarizeSurvey } from '../services/database/surveys/SummarizeSurvey'
 import { UpdateSurvey } from '../services/database/surveys/UpdateSurvey'
 import * as views from '../views/surveys.views'
 
@@ -88,5 +89,11 @@ export class SurveysController {
     const answer = await service.execute(dto)
 
     return response.status(201).json(answer)
+  }
+
+  async summary({ params, user }: Request, response: Response): Promise<Response> {
+    const service = container.resolve(SummarizeSurvey)
+    const summarizedSurvey = await service.execute({ surveyId: params.id, userId: user.id })
+    return response.json(summarizedSurvey)
   }
 }

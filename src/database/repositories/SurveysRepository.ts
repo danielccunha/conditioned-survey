@@ -19,6 +19,7 @@ export interface SurveysRepository {
   findByIdWithRelations(id: string): Promise<Survey>
   findOpenByUserAndTitle(userId: string, title: string): Promise<Survey>
   findAnswerByUserANdSurvey(userId: string, surveyId: string): Promise<SurveyAnswer>
+  findAnswers(surveyId: string): Promise<SurveyAnswer[]>
   create(survey: Survey): Promise<Survey>
   update(survey: Survey): Promise<Survey>
   publish(survey: Survey): Promise<Survey>
@@ -100,6 +101,10 @@ export class SurveysRepositoryImpl implements SurveysRepository {
 
   findAnswerByUserANdSurvey(userId: string, surveyId: string): Promise<SurveyAnswer> {
     return this.answersRepo.findOne({ where: { userId, surveyId } })
+  }
+
+  findAnswers(surveyId: string): Promise<SurveyAnswer[]> {
+    return this.answersRepo.find({ where: { surveyId }, relations: ['user'] })
   }
 
   async create(survey: Survey): Promise<Survey> {

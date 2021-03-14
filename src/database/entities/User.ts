@@ -42,4 +42,10 @@ export class User {
 
   @OneToMany(() => SurveyAnswer, answer => answer.user)
   answers: SurveyAnswer[]
+
+  get age(): number {
+    const diff = Date.now() - this.birthday.getTime()
+    const ageDate = new Date(diff)
+    return Math.abs(ageDate.getUTCFullYear() - 1970)
+  }
 }
