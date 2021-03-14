@@ -3,6 +3,7 @@ import { container } from 'tsyringe'
 
 import { SurveyStatus } from '../database/entities/Survey'
 import { CloseSurvey } from '../services/database/surveys/CloseSurvey'
+import { CreateAnswer } from '../services/database/surveys/CreateAnswer'
 import { CreateSurvey } from '../services/database/surveys/CreateSurvey'
 import { FindSurveys } from '../services/database/surveys/FindSurveys'
 import { FindSurveyWithRelations } from '../services/database/surveys/FindSurveyWithRelations'
@@ -79,5 +80,13 @@ export class SurveysController {
     })
 
     return response.status(201).json(specs)
+  }
+
+  async answer({ params, user, body }: Request, response: Response): Promise<Response> {
+    const dto = { surveyId: params.id, userId: user.id, value: body.value }
+    const service = container.resolve(CreateAnswer)
+    const answer = await service.execute(dto)
+
+    return response.status(201).json(answer)
   }
 }
